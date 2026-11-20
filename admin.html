@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#10101b">
+<title>অ্যাডমিন প্যানেল | রহস্যরাত</title>
+<style>
+:root{--panel:#151521;--panel2:#1c1c2b;--text:#f4f1fa;--muted:#b5b0c6;--accent:#c9a7ff;--line:#343246}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#20152f 0,#0b0b12 55%);color:var(--text);font-family:system-ui,"Noto Sans Bengali",sans-serif;line-height:1.7;padding:24px 14px}
+.wrap{width:min(760px,100%);margin:auto}.brand{font-size:26px;font-weight:850;margin-bottom:4px}.brand span{color:var(--accent)}.sub{color:var(--muted);margin-top:0}.panel{margin:24px 0;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}.panel h1{font-size:24px;margin:0 0 8px}.panel p{color:var(--muted)}
+input,select,textarea{width:100%;background:#0f0f18;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:12px;font:inherit}.field{margin:13px 0}.field label{display:block;margin-bottom:5px;color:var(--muted);font-size:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.full{grid-column:1/-1}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}.btn{border:0;border-radius:10px;background:var(--accent);color:#171020;font-weight:800;padding:11px 16px;text-decoration:none;cursor:pointer;font:inherit}.btn.alt{background:var(--panel2);color:var(--text);border:1px solid var(--line)}.hint{font-size:13px;color:var(--muted)}.note{border:1px solid #5d4a6c;background:#21172a;color:#e8d8f5;border-radius:12px;padding:12px 14px;font-size:13px;margin:15px 0}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.panel{padding:16px}}
+</style></head><body><main class="wrap">
+<div class="brand">🌒 রহস্য<span>রাত</span></div><p class="sub">শুধু অনুমোদিত অ্যাডমিনের জন্য</p>
+<section class="panel"><h1>🔐 অ্যাডমিন লগইন</h1><p>Firebase Authentication-এ থাকা অ্যাডমিন ইমেইল ও পাসওয়ার্ড দিয়ে প্রবেশ করুন।</p>
+<div id="loginBox"><div class="field"><label for="adminEmail">অ্যাডমিন ইমেইল</label><input id="adminEmail" type="email" autocomplete="username" placeholder="আপনার অ্যাডমিন ইমেইল"></div>
+<div class="field"><label for="adminPassword">পাসওয়ার্ড</label><input id="adminPassword" type="password" autocomplete="current-password" placeholder="আপনার Firebase পাসওয়ার্ড"></div>
+<div class="actions"><button class="btn" id="loginBtn">লগইন করুন</button><button class="btn alt" id="resetBtn">পাসওয়ার্ড ভুলে গেলে</button></div><p class="hint" id="loginMessage" aria-live="polite"></p></div>
+<div id="adminBox" style="display:none"><div class="note">অ্যাডমিন হিসেবে লগইন হয়েছে। এখানে প্রকাশ করলে গল্পটি সবার ওয়েবসাইটে দেখা যাবে।</div>
+<div class="grid"><div class="field"><label for="title">গল্পের শিরোনাম</label><input id="title" maxlength="100" placeholder="যেমন: বাঁশবাগানের শেষ আলো"></div>
+<div class="field"><label for="category">বিভাগ</label><select id="category"><option>ভূতের গল্প</option><option>জিনের গল্প</option><option>গ্রামের রহস্য</option><option>অতিপ্রাকৃত কল্পকাহিনি</option></select></div>
+<div class="field full"><label for="summary">ছোট বিবরণ</label><input id="summary" maxlength="240" placeholder="গল্পটির আকর্ষণীয় ১–২ লাইনের পরিচিতি"></div>
+<div class="field full"><label for="storyText">সম্পূর্ণ গল্প</label><textarea id="storyText" rows="10" placeholder="এখানে গল্প লিখুন বা পেস্ট করুন…"></textarea></div></div>
+<div class="actions"><button class="btn" id="publishBtn">সবার জন্য গল্প প্রকাশ করুন</button><button class="btn alt" id="logoutBtn">লগআউট</button><a class="btn alt" href="/">মূল ওয়েবসাইট</a></div><p class="hint" id="publishMessage" aria-live="polite"></p></div></section></main>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyC_lZefztbEF4W9LDrci9YeFqslHPRyqFw",authDomain:"rohossorat.firebaseapp.com",projectId:"rohossorat",storageBucket:"rohossorat.firebasestorage.app",messagingSenderId:"382019332214",appId:"1:382019332214:web:34f1ef0a73cceb6e9b5757"};
+const ADMIN_UID="8zuu9g56tkfFpLb9bQazq0ioFzn1";
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const loginMessage=document.getElementById("loginMessage");
+document.getElementById("loginBtn").onclick=async()=>{const email=document.getElementById("adminEmail").value.trim(),password=document.getElementById("adminPassword").value;if(!email||!password){loginMessage.textContent="ইমেইল ও পাসওয়ার্ড লিখুন।";return;}loginMessage.textContent="লগইন হচ্ছে…";try{await signInWithEmailAndPassword(auth,email,password);}catch(e){loginMessage.textContent="লগইন হয়নি: "+(e.code==="auth/invalid-credential"?"ইমেইল বা পাসওয়ার্ড ভুল।":"আবার চেষ্টা করুন। "+e.message);}};
+document.getElementById("resetBtn").onclick=async()=>{const email=document.getElementById("adminEmail").value.trim();if(!email){loginMessage.textContent="আগে ইমেইল লিখুন।";return;}try{await sendPasswordResetEmail(auth,email);loginMessage.textContent="পাসওয়ার্ড রিসেটের ইমেইল পাঠানো হয়েছে। Gmail-এর Inbox/Spam দেখুন।";}catch(e){loginMessage.textContent="রিসেট ইমেইল পাঠানো যায়নি: "+e.message;}};
+onAuthStateChanged(auth,user=>{if(user&&user.uid===ADMIN_UID){document.getElementById("loginBox").style.display="none";document.getElementById("adminBox").style.display="block";document.getElementById("publishMessage").textContent="লগইন সফল। এখন গল্প প্রকাশ করতে পারবেন।";}else{if(user)signOut(auth);document.getElementById("loginBox").style.display="block";document.getElementById("adminBox").style.display="none";}});
+document.getElementById("logoutBtn").onclick=()=>signOut(auth);
+document.getElementById("publishBtn").onclick=async()=>{const title=document.getElementById("title").value.trim(),category=document.getElementById("category").value,summary=document.getElementById("summary").value.trim(),content=document.getElementById("storyText").value.trim(),msg=document.getElementById("publishMessage"),user=auth.currentUser;if(!title||!summary||!content){msg.textContent="শিরোনাম, ছোট বিবরণ ও সম্পূর্ণ গল্প পূরণ করুন।";return;}if(!user||user.uid!==ADMIN_UID){msg.textContent="অ্যাডমিন লগইন পাওয়া যায়নি। আবার লগইন করুন।";return;}msg.textContent="গল্প প্রকাশ হচ্ছে…";try{await addDoc(collection(db,"stories"),{title,category,summary,text:content,published:true,createdAt:serverTimestamp()});document.getElementById("title").value="";document.getElementById("summary").value="";document.getElementById("storyText").value="";msg.textContent="সফল! গল্পটি অনলাইনে প্রকাশ হয়েছে।";}catch(e){console.error(e);msg.textContent="প্রকাশ করা যায়নি: "+e.message;}};
+</script></body></html>

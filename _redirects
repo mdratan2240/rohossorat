@@ -1,0 +1,2 @@
+# Story URLs are served by the main app; the app renders each published story and its SEO metadata.
+/story/*  /index.html  200

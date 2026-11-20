@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://imaginative-squirrel-3fbfd1.netlify.app/sitemap.xml
