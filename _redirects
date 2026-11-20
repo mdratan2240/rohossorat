@@ -1,4 +1,4 @@
 # Serve each story route through the app so the published story is rendered.
 /story/*  /index.html  200
-# Generate the sitemap dynamically from published Firestore stories.
-/sitemap.xml  /.netlify/functions/sitemap  200
+# Force the dynamic function to take precedence over the existing static sitemap.xml.
+/sitemap.xml  /.netlify/functions/sitemap  200!
