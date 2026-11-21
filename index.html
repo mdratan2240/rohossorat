@@ -26,7 +26,7 @@
 a{color:inherit}.wrap{width:min(1040px,100% - 28px);margin:auto}
 header{padding:24px 0 20px;border-bottom:1px solid var(--line);background:#0b0b12cc}
 .brandrow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.brand{font-size:26px;font-weight:850;letter-spacing:.2px}.brand span{color:var(--accent)}.tag{color:var(--muted);font-size:14px;margin-top:0}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}nav a,.pill{background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:7px 13px;text-decoration:none;font-size:14px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}nav a,.pill{background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:7px 13px;text-decoration:none;font-size:14px}\n.adminbox input,.adminbox textarea{width:100%;padding:11px;margin:5px 0 12px;border:1px solid var(--line);border-radius:10px;background:#10101b;color:var(--text);font:inherit}.adminbox label{display:block;color:var(--muted);font-size:14px}.adminbox .adminitem{padding:12px;border:1px solid var(--line);border-radius:12px;margin:10px 0}.adminbox button{cursor:pointer}.adminbox [hidden]{display:none!important}
 .hero{padding:32px 0 24px}.eyebrow{color:var(--gold);font-size:13px;letter-spacing:1.4px;text-transform:uppercase}.hero h1{font-size:clamp(30px,6vw,54px);line-height:1.2;margin:8px 0 12px}.hero p{color:var(--muted);max-width:690px;margin:0 0 20px}
 .actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:0;border-radius:10px;background:var(--accent);color:#171020;font-weight:800;padding:11px 16px;text-decoration:none;cursor:pointer;font:inherit}.btn.alt{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
 .note{border:1px solid #5d4a6c;background:#21172a;color:#e8d8f5;border-radius:12px;padding:12px 14px;font-size:13px;margin:15px 0 22px}
@@ -88,7 +88,7 @@ footer{margin-top:35px;border-top:1px solid var(--line);padding:22px 0 35px;colo
 <body>
 <header><div class="wrap">
  <div class="brandrow"><div><div class="brand">🌒 রহস্য<span>রাত</span></div><p class="tag" id="subtitle">বাংলা ভূত, জিন ও রহস্যের গল্প</p></div><span class="pill">গল্পের জগৎ • কল্পকাহিনি</span></div>
- <nav><a href="#stories">গল্প পড়ুন</a><a href="#about">আমাদের সম্পর্কে</a></nav>
+ <nav><a href="#stories">গল্প পড়ুন</a><a href="#about">আমাদের সম্পর্কে</a><a href="#admin">🔐 Admin Login</a></nav>
 </div></header>
 <main class="wrap">
 <section class="hero">
@@ -118,12 +118,14 @@ footer{margin-top:35px;border-top:1px solid var(--line);padding:22px 0 35px;colo
  <ul><li>নিয়মিত মৌলিক গল্প প্রকাশ করে পাঠক তৈরি করুন।</li><li>ফেসবুক পেজ ও অন্যান্য উপযুক্ত মাধ্যমে গল্পের লিংক শেয়ার করুন—স্প্যাম করবেন না।</li><li>পরে মানসম্মত কনটেন্ট ও নীতিমালা পূরণ করলে বিজ্ঞাপন নেটওয়ার্কে আবেদন করতে পারেন; অনুমোদন বা আয় নিশ্চিত নয়।</li><li>নিজস্ব গল্পের অডিও সংস্করণ, ই-বুক বা সদস্যদের জন্য অতিরিক্ত গল্পের মতো বিকল্প পরীক্ষা করতে পারেন।</li></ul>
  <p class="hint">ভিজিটর, কনটেন্টের মান, পাঠকের আগ্রহ এবং বিজ্ঞাপন নেটওয়ার্কের অনুমোদনের ওপর আয় নির্ভর করবে। শুধু সাইট তৈরি করলেই আয় শুরু হয় না।</p>
 </section>
+<section class="panel adminbox" id="admin"><h2>🔐 Admin Panel</h2><p class="hint" id="adminStatus">অ্যাডমিন হিসেবে প্রবেশ করতে লগইন করুন।</p><div id="adminLogin"><form id="adminLoginForm"><label for="adminEmail">Admin Email</label><input id="adminEmail" type="email" autocomplete="username" required><label for="adminPassword">Password</label><input id="adminPassword" type="password" autocomplete="current-password" required><button class="btn" type="submit">লগইন করুন</button></form></div><div id="adminWorkspace" hidden><p><button class="btn alt" type="button" id="adminLogout">লগআউট</button></p><h3 id="editorHeading">নতুন গল্প প্রকাশ করুন</h3><form id="storyEditor"><input id="editStoryId" type="hidden"><label for="storyTitle">গল্পের শিরোনাম</label><input id="storyTitle" required maxlength="180"><label for="storyCategory">বিভাগ</label><input id="storyCategory" required placeholder="যেমন: ভৌতিক গল্প"><label for="storySummary">সংক্ষিপ্ত বিবরণ</label><textarea id="storySummary" rows="3" required maxlength="500"></textarea><label for="storyText">সম্পূর্ণ গল্প</label><textarea id="storyText" rows="12" required></textarea><button class="btn" type="submit" id="saveStoryButton">গল্প প্রকাশ করুন</button> <button class="btn alt" type="button" id="cancelStoryEdit" hidden>সম্পাদনা বাতিল</button></form><h3>প্রকাশিত গল্প পরিচালনা</h3><div id="adminStories">গল্প লোড হচ্ছে...</div></div></section>
 </main>
 <footer><div class="wrap">© রহস্যরাত • বাংলা ভৌতিক ও রহস্য কল্পকাহিনি</div></footer>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 
-import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, where, addDoc, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
 const firebaseConfig = {
  apiKey: "AIzaSyC_lZefztbEF4W9LDrci9YeFqslHPRyqFw",
@@ -135,6 +137,8 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+const ADMIN_UID = "8zuu9g56tkfFpLb9bQazq0ioFzn1";
 const starter=[
  {id:"sample-1",title:"শেষ ট্রেনের যাত্রী",category:"ভূতের গল্প",summary:"মধ্যরাতের শেষ ট্রেনে এক যাত্রী উঠল—কিন্তু স্টেশনের খাতায় তার নাম ছিল না।",text:"রাত তখন প্রায় বারোটা। ছোট্ট স্টেশনটায় কুয়াশা নেমেছে, আর দূরের সিগন্যালের লাল আলো কাঁপছে। রেলকর্মী করিম দেখল, শেষ ট্রেন থামতেই ধূসর চাদর জড়ানো একজন লোক ধীরে ধীরে নামল।\\n\\nলোকটি জিজ্ঞেস করল, “পুরোনো বটতলার পথ কোন দিকে?” করিম পথ দেখিয়ে দিল। লোকটি চলে যাওয়ার পর করিমের মনে হলো, লোকটির পায়ের শব্দ সে শুনতেই পায়নি।\\n\\nপরদিন পুরোনো রেজিস্টার ঘাঁটতে গিয়ে করিম একটি খবর পেল—বিশ বছর আগে ঠিক ওই রাতেই বটতলার কাছে ট্রেন দুর্ঘটনায় এক অচেনা যাত্রী নিখোঁজ হয়েছিল। রেজিস্টারে তার নামের জায়গাটি ফাঁকা।\\n\\nসেই থেকে শেষ ট্রেন থামলে করিম প্ল্যাটফর্মের দিকে তাকায়। কুয়াশার ভেতর ধূসর চাদর দেখা যায় কি না, সে আজও জানে না।"},
  {id:"sample-2",title:"বাঁশবাগানের ফিসফিস",category:"গ্রামের রহস্য",summary:"গ্রামের শেষ প্রান্তের বাঁশবাগানে সন্ধ্যার পর কেউ নাম ধরে ডাকত।",text:"ময়না তার নানাবাড়িতে বেড়াতে এসে শুনল, সন্ধ্যার পর বাঁশবাগানের পাশ দিয়ে একা যাওয়া মানা। গ্রামের লোকেরা বলত, বাতাস না থাকলেও সেখানে বাঁশ দুলে আর কারও ফিসফিস শোনা যায়।\\n\\nএক সন্ধ্যায় ময়না উঠোন থেকে নিজের নাম শুনল। শব্দটা এল বাগানের দিক থেকে। সে এগোতেই নানির ডাকে থেমে গেল। নানি জানালেন, বহু বছর আগে হারিয়ে যাওয়া এক রাখাল প্রতিদিন সন্ধ্যায় সঙ্গীদের নাম ধরে ডাকত।\\n\\nপরদিন সকালে সবাই মিলে বাগানে গিয়ে দেখল, মাটিতে পুরোনো পায়ের ছাপ—যেগুলো গিয়ে থেমেছে একটি শুকনো কুয়োর পাশে। কুয়োর ভেতর থেকে শুধু বাতাস উঠছিল।\\n\\nসেদিনের পর ময়না আর কোনো ডাকের জবাব দেয়নি। তবে ঝড়ের রাতে বাঁশের পাতায় পাতায় যেন কারও নাম উচ্চারিত হয়।"},
@@ -239,7 +243,73 @@ async function loadPublishedStories(){
  }
 }
 
-render();
+
+const adminStatus=document.getElementById("adminStatus");
+const adminLogin=document.getElementById("adminLogin");
+const adminWorkspace=document.getElementById("adminWorkspace");
+const adminStories=document.getElementById("adminStories");
+let managedStories=[];
+function resetStoryEditor(){
+ document.getElementById("storyEditor").reset();
+ document.getElementById("editStoryId").value="";
+ document.getElementById("editorHeading").textContent="নতুন গল্প প্রকাশ করুন";
+ document.getElementById("saveStoryButton").textContent="গল্প প্রকাশ করুন";
+ document.getElementById("cancelStoryEdit").hidden=true;
+}
+async function refreshAdminStories(){
+ adminStories.textContent="গল্প লোড হচ্ছে...";
+ try{
+  const snap=await getDocs(collection(db,"stories"));
+  managedStories=snap.docs.map(d=>({id:d.id,...d.data()}));
+  managedStories.sort((a,b)=>(b.createdAt?.toMillis?.()||0)-(a.createdAt?.toMillis?.()||0));
+  if(!managedStories.length){adminStories.textContent="এখনো কোনো গল্প নেই।";return;}
+  adminStories.innerHTML=managedStories.map(s=>'<div class="adminitem"><strong>'+esc(s.title||"শিরোনামহীন")+'</strong><p>'+esc(s.category||"")+' • '+(s.published?"প্রকাশিত":"অপ্রকাশিত")+'</p><button class="btn alt" type="button" data-edit-story="'+esc(s.id)+'">সম্পাদনা</button> <button class="btn alt" type="button" data-delete-story="'+esc(s.id)+'">মুছুন</button></div>').join("");
+  adminStories.querySelectorAll("[data-edit-story]").forEach(b=>b.addEventListener("click",()=>{
+   const s=managedStories.find(x=>x.id===b.dataset.editStory);if(!s)return;
+   document.getElementById("editStoryId").value=s.id;
+   document.getElementById("storyTitle").value=s.title||"";
+   document.getElementById("storyCategory").value=s.category||"";
+   document.getElementById("storySummary").value=s.summary||"";
+   document.getElementById("storyText").value=s.text||s.content||"";
+   document.getElementById("editorHeading").textContent="গল্প সম্পাদনা করুন";
+   document.getElementById("saveStoryButton").textContent="পরিবর্তন সংরক্ষণ করুন";
+   document.getElementById("cancelStoryEdit").hidden=false;
+   document.getElementById("storyEditor").scrollIntoView({behavior:"smooth",block:"start"});
+  }));
+  adminStories.querySelectorAll("[data-delete-story]").forEach(b=>b.addEventListener("click",async()=>{
+   const s=managedStories.find(x=>x.id===b.dataset.deleteStory);if(!s||!confirm("“"+(s.title||"এই গল্প")+"” মুছে ফেলবেন?"))return;
+   try{await deleteDoc(doc(db,"stories",s.id));adminStatus.textContent="গল্প মুছে ফেলা হয়েছে।";resetStoryEditor();await refreshAdminStories();await loadPublishedStories();}
+   catch(e){adminStatus.textContent="গল্প মুছতে সমস্যা হয়েছে: "+e.message;}
+  }));
+ }catch(e){adminStories.textContent="গল্প লোড করা যায়নি: "+e.message;}
+}
+document.getElementById("adminLoginForm").addEventListener("submit",async e=>{
+ e.preventDefault();adminStatus.textContent="লগইন যাচাই হচ্ছে...";
+ try{await signInWithEmailAndPassword(auth,document.getElementById("adminEmail").value.trim(),document.getElementById("adminPassword").value);}
+ catch(err){adminStatus.textContent="লগইন হয়নি। ইমেইল/পাসওয়ার্ড যাচাই করুন: "+err.message;}
+});
+document.getElementById("adminLogout").addEventListener("click",()=>signOut(auth));
+document.getElementById("cancelStoryEdit").addEventListener("click",resetStoryEditor);
+document.getElementById("storyEditor").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const id=document.getElementById("editStoryId").value;
+ const story={title:document.getElementById("storyTitle").value.trim(),category:document.getElementById("storyCategory").value.trim(),summary:document.getElementById("storySummary").value.trim(),text:document.getElementById("storyText").value.trim(),published:true};
+ if(!story.title||!story.category||!story.summary||!story.text){adminStatus.textContent="সব ঘর পূরণ করুন।";return;}
+ const save=document.getElementById("saveStoryButton");save.disabled=true;adminStatus.textContent="গল্প সংরক্ষণ হচ্ছে...";
+ try{
+  if(id){await updateDoc(doc(db,"stories",id),story);adminStatus.textContent="গল্পের পরিবর্তন সংরক্ষণ হয়েছে।";}
+  else{await addDoc(collection(db,"stories"),{...story,createdAt:serverTimestamp()});adminStatus.textContent="গল্প সফলভাবে প্রকাশ করা হয়েছে।";}
+  resetStoryEditor();await refreshAdminStories();await loadPublishedStories();
+ }catch(err){adminStatus.textContent="গল্প সংরক্ষণ হয়নি: "+err.message;}
+ finally{save.disabled=false;}
+});
+onAuthStateChanged(auth,async user=>{
+ if(!user){adminLogin.hidden=false;adminWorkspace.hidden=true;adminStatus.textContent="অ্যাডমিন হিসেবে প্রবেশ করতে লগইন করুন।";return;}
+ if(user.uid!==ADMIN_UID){adminStatus.textContent="এই অ্যাকাউন্টের Admin অনুমতি নেই।";adminLogin.hidden=false;adminWorkspace.hidden=true;await signOut(auth);return;}
+ adminLogin.hidden=true;adminWorkspace.hidden=false;adminStatus.textContent="অ্যাডমিন হিসেবে লগইন হয়েছে। এখন গল্প প্রকাশ বা পরিচালনা করতে পারবেন।";
+ await refreshAdminStories();
+});
+
 render();
 loadPublishedStories();
 </script>
