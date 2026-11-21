@@ -1,7 +1,6 @@
 // Dynamic XML sitemap for published Firestore stories.
-// This is the same public Firebase web API key already used by the site's
-// client-side Firebase configuration. Firestore Security Rules remain the
-// access-control boundary; only documents with published == true are queried.
+// Uses the same public Firebase web API key as the site. Firestore Security
+// Rules remain the access-control boundary; only published stories are listed.
 export default async () => {
   const siteUrl = "https://imaginative-squirrel-3fbfd1.netlify.app";
   const apiKey = "AIzaSyC_lZefztbEF4W9LDrci9YeFqslHPRyqFw";
@@ -46,10 +45,13 @@ export default async () => {
       entries.push(`  <url><loc>${siteUrl}/story/${encodeURIComponent(id)}</loc>${lastmod}</url>`);
     }
 
-    const xml = `<?xml version="1.0" encoding="UTF-8"?>\\n` +
-      `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\\n` +
-      entries.join("\\n") +
-      "\\n</urlset>\\n";
+    const xml = [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+      ...entries,
+      '</urlset>',
+      ''
+    ].join("\n");
 
     return new Response(xml, {
       status: 200,
