@@ -1,15 +1,10 @@
 // Dynamic XML sitemap for published Firestore stories.
-// Configure FIREBASE_API_KEY in Netlify environment variables before deploying.
+// This is the same public Firebase web API key already used by the site's
+// client-side Firebase configuration. Firestore Security Rules remain the
+// access-control boundary; only documents with published == true are queried.
 export default async () => {
   const siteUrl = "https://imaginative-squirrel-3fbfd1.netlify.app";
-  const apiKey = process.env.FIREBASE_API_KEY;
-  if (!apiKey) {
-    return new Response("Sitemap is not configured: FIREBASE_API_KEY is missing.", {
-      status: 503,
-      headers: { "content-type": "text/plain; charset=utf-8" }
-    });
-  }
-
+  const apiKey = "AIzaSyC_lZefztbEF4W9LDrci9YeFqslHPRyqFw";
   const endpoint = `https://firestore.googleapis.com/v1/projects/rohossorat/databases/(default)/documents:runQuery?key=${encodeURIComponent(apiKey)}`;
   const query = {
     structuredQuery: {
@@ -38,19 +33,23 @@ export default async () => {
     }
 
     const rows = await response.json();
-    const urls = [`${siteUrl}/`];
+    const entries = [`  <url><loc>${siteUrl}/</loc></url>`];
     for (const row of rows) {
-      const name = row?.document?.name;
+      const document = row?.document;
+      const name = document?.name;
       if (!name) continue;
       const id = name.split("/").pop();
       if (!id || !/^[A-Za-z0-9_-]+$/.test(id)) continue;
-      urls.push(`${siteUrl}/story/${encodeURIComponent(id)}`);
+      const lastmod = document.updateTime
+        ? `<lastmod>${new Date(document.updateTime).toISOString()}</lastmod>`
+        : "";
+      entries.push(`  <url><loc>${siteUrl}/story/${encodeURIComponent(id)}</loc>${lastmod}</url>`);
     }
 
-    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n` +
-      `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-      urls.map((url) => `  <url><loc>${url}</loc></url>`).join("\n") +
-      "\n</urlset>\n";
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>\\n` +
+      `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\\n` +
+      entries.join("\\n") +
+      "\\n</urlset>\\n";
 
     return new Response(xml, {
       status: 200,
