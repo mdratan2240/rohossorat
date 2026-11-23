@@ -1,2 +1,4 @@
-# Story URLs are served by the main app; the app renders each published story and its SEO metadata.
+# Serve each story route through the app so the published story is rendered.
 /story/*  /index.html  200
+# Force the dynamic function to take precedence over the existing static sitemap.xml.
+/sitemap.xml  /.netlify/functions/sitemap  200!
