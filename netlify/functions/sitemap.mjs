@@ -1,9 +1,17 @@
 // Dynamic XML sitemap for published Firestore stories.
-// Uses the same public Firebase web API key as the site. Firestore Security
-// Rules remain the access-control boundary; only published stories are listed.
+// The Firebase web API key is read from Netlify's FIREBASE_API_KEY variable.
+// Firestore Security Rules remain the access-control boundary.
 export default async () => {
   const siteUrl = "https://imaginative-squirrel-3fbfd1.netlify.app";
-  const apiKey = "AIzaSyC_lZefztbEF4W9LDrci9YeFqslHPRyqFw";
+  const apiKey = process.env.FIREBASE_API_KEY;
+
+  if (!apiKey) {
+    return new Response("FIREBASE_API_KEY is not configured.", {
+      status: 503,
+      headers: { "content-type": "text/plain; charset=utf-8" }
+    });
+  }
+
   const endpoint = `https://firestore.googleapis.com/v1/projects/rohossorat/databases/(default)/documents:runQuery?key=${encodeURIComponent(apiKey)}`;
   const query = {
     structuredQuery: {
@@ -24,6 +32,7 @@ export default async () => {
       headers: { "content-type": "application/json" },
       body: JSON.stringify(query)
     });
+
     if (!response.ok) {
       return new Response("Unable to read published stories from Firestore.", {
         status: 502,
@@ -33,15 +42,19 @@ export default async () => {
 
     const rows = await response.json();
     const entries = [`  <url><loc>${siteUrl}/</loc></url>`];
+
     for (const row of rows) {
       const document = row?.document;
       const name = document?.name;
       if (!name) continue;
+
       const id = name.split("/").pop();
       if (!id || !/^[A-Za-z0-9_-]+$/.test(id)) continue;
+
       const lastmod = document.updateTime
         ? `<lastmod>${new Date(document.updateTime).toISOString()}</lastmod>`
         : "";
+
       entries.push(`  <url><loc>${siteUrl}/story/${encodeURIComponent(id)}</loc>${lastmod}</url>`);
     }
 
